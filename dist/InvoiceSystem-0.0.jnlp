@@ -8,11 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="InvoiceSystem-0.0.jar" size="2642" download="eager" />
+    <jar href="InvoiceSystem-0.0.jar" size="3094" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="InvoiceSystem-0.0" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="invoicesystem.pkg0.pkg0.InvoiceSystem00"  name="InvoiceSystem-0.0" />
+  <jfx:javafx-desc  width="800" height="600" main-class="invoicesystem.InvoiceSystem00"  name="InvoiceSystem-0.0" />
   <update check="always"/>
 </jnlp>
