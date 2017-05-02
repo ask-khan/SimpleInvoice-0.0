@@ -49,13 +49,13 @@
       <ChoiceBox fx:id="discountPackage" layoutX="201.0" layoutY="119.0" prefHeight="25.0" prefWidth="219.0" />
       <TextField fx:id="discountProduct" layoutX="40.0" layoutY="285.0" prefHeight="29.0" prefWidth="205.0" promptText="Discount" />
       <Button fx:id="addButton" layoutX="746.0" layoutY="279.0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="29.0" prefWidth="120.0" text="Add " />
-      <TableView layoutX="7.0" layoutY="347.0" prefHeight="332.0" prefWidth="430.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <TableView fx:id="productTable" layoutX="7.0" layoutY="347.0" prefHeight="332.0" prefWidth="430.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
-            <TableColumn prefWidth="98.0" text="Quanlity" />
-            <TableColumn prefWidth="466.0" text="Product Name" />
-          <TableColumn minWidth="0.0" prefWidth="152.0" text="Trade Price" />
-          <TableColumn minWidth="0.0" prefWidth="134.0" text="Discount" />
-            <TableColumn prefWidth="149.0" text="Amount" />
+            <TableColumn fx:id="productQuanlity" prefWidth="98.0" text="Quanlity" />
+            <TableColumn fx:id="productName" prefWidth="466.0" text="Product Name" />
+          <TableColumn fx:id="productTradePrice" minWidth="0.0" prefWidth="152.0" text="Trade Price" />
+          <TableColumn fx:id="productDiscount" minWidth="0.0" prefWidth="134.0" text="Discount" />
+            <TableColumn fx:id="productAmount" prefWidth="149.0" text="Amount" />
         </columns>
       </TableView>
    </children>
