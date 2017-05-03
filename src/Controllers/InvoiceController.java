@@ -32,7 +32,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class InvoiceController implements Initializable {
     // Create TextField
     @FXML
-    public TextField customerName, billNo, quanlity, tradePrice, discountProduct ;
+    public TextField customerName, billNo, quanlity, tradePrice, individualDiscount, combineDiscount ;
     // Create DatePicker
     @FXML
     public DatePicker datePicker;
@@ -41,9 +41,10 @@ public class InvoiceController implements Initializable {
     public ChoiceBox<String> productLine = new ChoiceBox<String>();
     @FXML
     public ChoiceBox<String> discountPackage = new ChoiceBox<String>();
+    
     // Create Button
     @FXML
-    public Button addButton;
+    public Button addButton , printButton;
     
     // Declare TableView Variable.
     @FXML
@@ -69,6 +70,20 @@ public class InvoiceController implements Initializable {
     private void onClickButton( ActionEvent event ) {
         
         
+        
+        ProductTable productTable  = calculateProcess(quanlity, productLine, tradePrice, individualDiscount);
+        productData.add( productTable );
+        
+    }
+    
+    @FXML
+    private void printOnClick( ActionEvent event ) {
+        
+        retieveCustomerData();
+        getTableData();
+    }
+    
+    public void retieveCustomerData () {
         // Get Customer Name
         String customerNames = customerName.getText();
         //Get Bill No
@@ -80,15 +95,63 @@ public class InvoiceController implements Initializable {
         
         // Get Date Picker Date.
         LocalDate datePiker = datePicker.getValue();
-        //String getDateInFormat = dateFormatter.format(datePiker);
         
-        ProductTable productTable = new ProductTable(23, "AHMED", 36, 23, 23);
-        System.out.println( productTable );
-        productData.add( productTable );
+        String getDateInFormat = dateFormatter.format( datePiker );
         
+        String discountPage =  (String) discountPackage.getValue();
+    
     }
     
+    public void getTableData () {
+        int productTableSize = productTable.getItems().size();
+        
+        if ( productTableSize > 0 ) {
+            for ( int i = 0; i < productTableSize ;  i++ ) {
+                // Declare JSONObject.
+                ProductTable productTables = productTable.getItems().get(i);
+                System.out.println( productTables );
+                
+                
+            }
+        } else {
+            System.out.println("No data is Add");
+        }
+    }
     
+    public  ProductTable calculateProcess ( TextField productQuanlity, ChoiceBox productName, TextField tradePrice, TextField productDiscount ) {
+        int productQuanlityInInteger = 0, tradePriceSelected = 0, productDiscountSelected = 0 , productAmountSelected = 0;
+        if ( !productQuanlity.getText().isEmpty() && !productQuanlity.getText().matches(".*[a-z].*") ) {
+            productQuanlityInInteger = Integer.parseInt( productQuanlity.getText() );
+        }
+        
+        String productNameSelected = (String)(productName.getValue());  
+        if ( productNameSelected.isEmpty() ) {
+            productNameSelected = "No Product Found";
+        }
+        
+        if ( !tradePrice.getText().isEmpty() && !tradePrice.getText().matches(".*[a-z].*") ) {
+            
+            tradePriceSelected = Integer.parseInt( tradePrice.getText() ); 
+        }
+        
+        if ( !productDiscount.getText().isEmpty() && !productDiscount.getText().matches(".*[a-z].*") ){
+            productDiscountSelected = ( Integer.parseInt( productDiscount.getText() ) == 0 ) ? 0 : Integer.parseInt( productDiscount.getText() ); 
+        } else {
+            productDiscountSelected = 0;
+        }
+        
+        if ( productDiscountSelected == 0 ) {
+            productAmountSelected = tradePriceSelected * productQuanlityInInteger;
+        } else {
+            float discount = ( (float) productDiscountSelected ) / 100;
+            productAmountSelected = (int) (( tradePriceSelected * productQuanlityInInteger ) * ( float )discount) ;
+        }
+        
+        System.out.print( productAmountSelected );
+        ProductTable productTable = new ProductTable( productQuanlityInInteger, productNameSelected, tradePriceSelected, productDiscountSelected, productAmountSelected);
+        
+        return productTable;
+    }
     
     /**
      * Initializes the controller class.
@@ -97,6 +160,9 @@ public class InvoiceController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         final String[] discountPackages = new String[] { "Combine", "Individuals" };
+        ObservableList<String> productNames = FXCollections.observableArrayList("Product A", "Product B");
+        productLine.setItems(productNames);
+        
         ObservableList<String> cursors = FXCollections.observableArrayList("Combine", "Individuals");
         discountPackage.setItems(cursors);
         
@@ -104,9 +170,11 @@ public class InvoiceController implements Initializable {
           public void changed(ObservableValue observable, Number value, Number new_value) {
               
             if ( discountPackages[new_value.intValue()].equals("Combine") ) {
-                discountProduct.setVisible(false);
+                individualDiscount.setVisible(false);
+                combineDiscount.setVisible(true);
             } else {
-                discountProduct.setVisible(true);
+                combineDiscount.setVisible(false);
+                individualDiscount.setVisible(true);
             }
           }
         });
@@ -115,8 +183,8 @@ public class InvoiceController implements Initializable {
         productName.setCellValueFactory(new PropertyValueFactory<ProductTable, String>("productName"));
         productQuanlity.setCellValueFactory(new PropertyValueFactory<ProductTable,Integer>("productQuanlity"));
         productTradePrice.setCellValueFactory(new PropertyValueFactory<ProductTable,Integer>("productTradePrice"));
-        productDiscount.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productTradePrice"));
-        productAmount.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productTradePrice"));
+        productDiscount.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productDiscount"));
+        productAmount.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productAmount"));
         productTable.setItems(productData);
     }    
     

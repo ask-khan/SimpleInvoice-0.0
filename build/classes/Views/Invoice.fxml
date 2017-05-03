@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.InvoiceController">
    <children>
-      <MenuBar layoutX="87.0" layoutY="75.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar layoutX="87.0" layoutY="75.0" AnchorPane.bottomAnchor="669.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -40,23 +40,25 @@
       </Label>
       <ChoiceBox fx:id="productLine" layoutX="40.0" layoutY="220.0" prefHeight="29.0" prefWidth="390.0" />
       <TextField fx:id="quanlity" layoutX="487.0" layoutY="220.0" prefHeight="29.0" prefWidth="219.0" promptText="Quanlity" />
-      <TextField layoutX="746.0" layoutY="220.0" prefHeight="29.0" prefWidth="219.0" promptText="Trade Price" />
+      <TextField fx:id="tradePrice" layoutX="746.0" layoutY="220.0" prefHeight="29.0" prefWidth="219.0" promptText="Trade Price" />
       <Label layoutX="40.0" layoutY="117.0" prefHeight="29.0" prefWidth="161.0" text="Discount Package:">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>
       </Label>
       <ChoiceBox fx:id="discountPackage" layoutX="201.0" layoutY="119.0" prefHeight="25.0" prefWidth="219.0" />
-      <TextField fx:id="discountProduct" layoutX="40.0" layoutY="285.0" prefHeight="29.0" prefWidth="205.0" promptText="Discount" />
+      <TextField fx:id="individualDiscount" layoutX="40.0" layoutY="285.0" prefHeight="29.0" prefWidth="205.0" promptText="Discount" />
       <Button fx:id="addButton" layoutX="746.0" layoutY="279.0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="29.0" prefWidth="120.0" text="Add " />
-      <TableView fx:id="productTable" layoutX="7.0" layoutY="347.0" prefHeight="332.0" prefWidth="430.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <TableView fx:id="productTable" layoutX="7.0" layoutY="347.0" prefHeight="332.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="199.0">
         <columns>
             <TableColumn fx:id="productQuanlity" prefWidth="98.0" text="Quanlity" />
-            <TableColumn fx:id="productName" prefWidth="466.0" text="Product Name" />
-          <TableColumn fx:id="productTradePrice" minWidth="0.0" prefWidth="152.0" text="Trade Price" />
-          <TableColumn fx:id="productDiscount" minWidth="0.0" prefWidth="134.0" text="Discount" />
-            <TableColumn fx:id="productAmount" prefWidth="149.0" text="Amount" />
+            <TableColumn fx:id="productName" prefWidth="289.0" text="Product Name" />
+          <TableColumn fx:id="productTradePrice" minWidth="0.0" prefWidth="142.0" text="Trade Price" />
+          <TableColumn fx:id="productDiscount" minWidth="0.0" prefWidth="96.0" text="Discount" />
+            <TableColumn fx:id="productAmount" prefWidth="175.0" text="Amount" />
         </columns>
       </TableView>
+      <TextField fx:id="combineDiscount" layoutX="816.0" layoutY="503.0" prefHeight="29.0" prefWidth="169.0" promptText="Combine Discount" />
+      <Button layoutX="816.0" layoutY="585.0" mnemonicParsing="false" onAction="#printOnClick" prefHeight="29.0" prefWidth="169.0" text="Print Invoice" />
    </children>
 </AnchorPane>
