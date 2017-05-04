@@ -24,6 +24,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import Handler.GeneratePDF;
+import com.itextpdf.text.DocumentException;
+import java.awt.print.PrinterException;
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 /**
  * FXML Controller class
  *
@@ -77,17 +84,34 @@ public class InvoiceController implements Initializable {
     }
     
     @FXML
-    private void printOnClick( ActionEvent event ) {
+    private void printOnClick( ActionEvent event ) throws JSONException, IOException, DocumentException, PrinterException {
         
-        retieveCustomerData();
-        getTableData();
+        String [] customersName = retieveCustomerData();
+        JSONArray tableData = getTableData();
+        GeneratePDF generatePDF = new GeneratePDF();
+        
+        String filePath =  generatePDF.GeneratePDFDoc( customersName, tableData );
+        generatePDF.PrintPDF( filePath );
     }
     
-    public void retieveCustomerData () {
-        // Get Customer Name
-        String customerNames = customerName.getText();
-        //Get Bill No
-        String billNumber = billNo.getText();
+    
+    
+    
+    public String[] retieveCustomerData () {
+        String[] customerData = new String[5];
+        
+        // Get Customer Name         
+        if ( customerName.getText().isEmpty() ) {
+            customerName.getStyleClass().add("error");
+        } else {
+            customerData[0] = customerName.getText();
+        }
+        // Get Bill Number
+        if ( billNo.getText().isEmpty() ) {
+            billNo.getStyleClass().add("error");
+        } else {
+            customerData[1] = billNo.getText();
+        }
         
         // Data Formations
         String pattern = "yyyy/MM/dd";
@@ -95,27 +119,41 @@ public class InvoiceController implements Initializable {
         
         // Get Date Picker Date.
         LocalDate datePiker = datePicker.getValue();
+        customerData[2] = dateFormatter.format( datePiker );
         
-        String getDateInFormat = dateFormatter.format( datePiker );
+        customerData[3] =  (String) discountPackage.getValue();
         
-        String discountPage =  (String) discountPackage.getValue();
-    
+        if ( customerData[4] == null) {
+            discountPackage.getStyleClass().add("error");
+        }
+        
+        return customerData;
     }
     
-    public void getTableData () {
+    public JSONArray getTableData () throws JSONException {
         int productTableSize = productTable.getItems().size();
+        // Declare JSONArray.
+        JSONArray tableInvoiceProductsData = new JSONArray();
         
         if ( productTableSize > 0 ) {
             for ( int i = 0; i < productTableSize ;  i++ ) {
+                JSONObject tableData = new JSONObject();
                 // Declare JSONObject.
                 ProductTable productTables = productTable.getItems().get(i);
-                System.out.println( productTables );
                 
+                tableData.put("ProductName", productTables.getProductName());
+                tableData.put("Quanlity", productTables.getProductQuanlity());
+                tableData.put("Discount", productTables.getProductDiscount());
+                tableData.put("TradePrice", productTables.getProductTradePrice());
+                tableData.put("Amount", productTables.getProductAmount());
                 
+                tableInvoiceProductsData.put(tableData);
             }
+            
         } else {
             System.out.println("No data is Add");
         }
+        return tableInvoiceProductsData;
     }
     
     public  ProductTable calculateProcess ( TextField productQuanlity, ChoiceBox productName, TextField tradePrice, TextField productDiscount ) {
@@ -162,6 +200,11 @@ public class InvoiceController implements Initializable {
         final String[] discountPackages = new String[] { "Combine", "Individuals" };
         ObservableList<String> productNames = FXCollections.observableArrayList("Product A", "Product B");
         productLine.setItems(productNames);
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate now = LocalDate.now();
+        //System.out.println();
+        datePicker.setValue(now);
         
         ObservableList<String> cursors = FXCollections.observableArrayList("Combine", "Individuals");
         discountPackage.setItems(cursors);
