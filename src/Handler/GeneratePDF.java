@@ -32,7 +32,7 @@ public class GeneratePDF {
     
     
     public String GeneratePDFDoc( String[] CustomerData, JSONArray tableData ) throws IOException, DocumentException, JSONException {
-            
+        
         String Path = "D:\\InvoicePDF/" + CustomerData[1] + ".pdf";
         //Create PdfReader instance. 
         PdfReader pdfReader = new PdfReader("D:\\InvoicePDF/SamplePDF.pdf");	  
@@ -77,7 +77,7 @@ public class GeneratePDF {
             for ( int i = 0 ; i < tableData.length(); i++ ) {
 
                 
-                System.out.println(tableData.getJSONObject(i));
+                //System.out.println(tableData.getJSONObject(i));
                 // Set Product Name.
                 PdfContentByte productName = pdfStamper.getOverContent(pages);   
                 productName.beginText(); 
@@ -99,18 +99,19 @@ public class GeneratePDF {
                 //Write text 
                 ProductQuanlity.showText(tableData.getJSONObject(i).get("Quanlity").toString()); 
                 ProductQuanlity.endText();
+                
+                if ( CustomerData[3] == "Individuals" ) {
+                    // Set Product Discount.
+                    PdfContentByte ProductDiscount = pdfStamper.getOverContent(pages);   
+                    ProductDiscount.beginText(); 
+                    //Set text font and size. 
+                    ProductDiscount.setFontAndSize(baseFont, 9);   
+                    ProductDiscount.setTextMatrix(327, heightValue);   
 
-                // Set Product Discount.
-                PdfContentByte ProductDiscount = pdfStamper.getOverContent(pages);   
-                ProductDiscount.beginText(); 
-                //Set text font and size. 
-                ProductDiscount.setFontAndSize(baseFont, 9);   
-                ProductDiscount.setTextMatrix(327, heightValue);   
-
-                //Write text 
-                ProductDiscount.showText(tableData.getJSONObject(i).get("Discount").toString()); 
-                ProductDiscount.endText();
-
+                    //Write text 
+                    ProductDiscount.showText(tableData.getJSONObject(i).get("Discount").toString()); 
+                    ProductDiscount.endText();
+                }
                 // Set Product Trade Price.
                 PdfContentByte ProductTradePrice = pdfStamper.getOverContent(pages);   
                 ProductTradePrice.beginText(); 
@@ -137,15 +138,46 @@ public class GeneratePDF {
                 //System.out.println(totalPrice);
               
             }
-            // Set Product Main Trade Price.
-            PdfContentByte ProductTotalMainPrice = pdfStamper.getOverContent(pages);   
-            ProductTotalMainPrice.beginText(); 
-            //Set text font and size. 
-            ProductTotalMainPrice.setFontAndSize(baseFont, 9);   
-            ProductTotalMainPrice.setTextMatrix(365, 82);       
-            //Write text 
-            ProductTotalMainPrice.showText(Integer.toString(totalPrice)); 
-            ProductTotalMainPrice.endText();
+            
+            if ( CustomerData[3] == "Combine" ) {
+                
+                // Set Product Main Trade Price.
+                PdfContentByte DiscountTotalMainPrice = pdfStamper.getOverContent(pages);   
+                DiscountTotalMainPrice.beginText(); 
+                //Set text font and size. 
+                DiscountTotalMainPrice.setFontAndSize(baseFont, 9);   
+                DiscountTotalMainPrice.setTextMatrix(327, 82);       
+                //Write text 
+                DiscountTotalMainPrice.showText(CustomerData[4] + " %" ); 
+                DiscountTotalMainPrice.endText();
+                
+                
+                // Set Product Main Trade Price.
+                PdfContentByte ProductTotalMainPrice = pdfStamper.getOverContent(pages);   
+                ProductTotalMainPrice.beginText(); 
+                //Set text font and size. 
+                ProductTotalMainPrice.setFontAndSize(baseFont, 9);   
+                ProductTotalMainPrice.setTextMatrix(365, 82);       
+                
+                float discountPrice = ( float )totalPrice * ( (float) Integer.parseInt(CustomerData[4]) / 100 );
+                int finalPrice = totalPrice - (int)discountPrice;
+                //Write text 
+                ProductTotalMainPrice.showText(Integer.toString(finalPrice)); 
+                ProductTotalMainPrice.endText();
+                
+            } else {
+                // Set Product Main Trade Price.
+                PdfContentByte ProductTotalMainPrice = pdfStamper.getOverContent(pages);   
+                ProductTotalMainPrice.beginText(); 
+                //Set text font and size. 
+                ProductTotalMainPrice.setFontAndSize(baseFont, 9);   
+                ProductTotalMainPrice.setTextMatrix(365, 82);       
+                //Write text 
+                ProductTotalMainPrice.showText(Integer.toString(totalPrice)); 
+                ProductTotalMainPrice.endText();
+                
+            }
+            
         }
         pdfStamper.close();	  
         
