@@ -10,6 +10,8 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import java.awt.print.Book;
+import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
@@ -48,26 +50,26 @@ public class GeneratePDF {
             CustomerName.beginText(); 
             //Set text font and size. 
             CustomerName.setFontAndSize(baseFont, 9);   
-            CustomerName.setTextMatrix(95, 520);   
+            CustomerName.setTextMatrix(48, 470);   
             //Write text 
-            System.out.println( CustomerData[0]);
+            //System.out.println( CustomerData[0]);
             CustomerName.showText( CustomerData[0] ); 
             CustomerName.endText();
 
-            PdfContentByte addressCode = pdfStamper.getOverContent(pages);   
-            addressCode.beginText(); 
+            PdfContentByte billNo = pdfStamper.getOverContent(pages);   
+            billNo.beginText(); 
             //Set text font and size. 
-            addressCode.setFontAndSize(baseFont, 9);   
-            addressCode.setTextMatrix(60, 505);   
+            billNo.setFontAndSize(baseFont, 9);   
+            billNo.setTextMatrix(65, 490);   
             //Write text 
-            addressCode.showText(CustomerData[1] ); 
-            addressCode.endText();
+            billNo.showText(CustomerData[1] ); 
+            billNo.endText();
 
             PdfContentByte submitDate = pdfStamper.getOverContent(pages);   
             submitDate.beginText(); 
             //Set text font and size. 
             submitDate.setFontAndSize(baseFont, 9);   
-            submitDate.setTextMatrix(48, 468);   
+            submitDate.setTextMatrix(330, 490);   
             //Write text 
             submitDate.showText(CustomerData[2]); 
             submitDate.endText();
@@ -75,7 +77,6 @@ public class GeneratePDF {
             int heightValue = 418;
             int totalPrice = 0;
             for ( int i = 0 ; i < tableData.length(); i++ ) {
-
                 
                 //System.out.println(tableData.getJSONObject(i));
                 // Set Product Name.
@@ -150,8 +151,7 @@ public class GeneratePDF {
                 //Write text 
                 DiscountTotalMainPrice.showText(CustomerData[4] + " %" ); 
                 DiscountTotalMainPrice.endText();
-                
-                
+                        
                 // Set Product Main Trade Price.
                 PdfContentByte ProductTotalMainPrice = pdfStamper.getOverContent(pages);   
                 ProductTotalMainPrice.beginText(); 
@@ -189,6 +189,8 @@ public class GeneratePDF {
         PrintService myPrintService = findPrintService("hp LaserJet 3015 UPD PCL 5");
         
         PrinterJob job = PrinterJob.getPrinterJob();
+        
+        job.printDialog();
         job.setPageable(new PDFPageable(document));
         job.setPrintService(myPrintService);
         job.print();
