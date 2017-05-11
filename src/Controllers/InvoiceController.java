@@ -78,7 +78,7 @@ public class InvoiceController implements Initializable {
     @FXML
     private void onClickButton( ActionEvent event ) {
         
-        ProductTable productTable  = calculateProcess(quanlity, productLine, tradePrice, individualDiscount);
+        ProductTable productTable  = calculateProcess(quanlity, productLine, tradePrice, individualDiscount,discountPackage);
         productData.add( productTable );
         
     }
@@ -175,8 +175,9 @@ public class InvoiceController implements Initializable {
         
     }
     
-    public  ProductTable calculateProcess ( TextField productQuanlity, ChoiceBox productName, TextField tradePrice, TextField productDiscount ) {
-        int productQuanlityInInteger = 0, tradePriceSelected = 0, productDiscountSelected = 0 , productAmountSelected = 0;
+    public  ProductTable calculateProcess ( TextField productQuanlity, ChoiceBox productName, TextField tradePrice, TextField productDiscount, ChoiceBox discountPackage ) {
+        int productQuanlityInInteger = 0, tradePriceSelected = 0, productDiscountSelected = 0; 
+        float productAmountSelected = 0;
         if ( !productQuanlity.getText().isEmpty() && !productQuanlity.getText().matches(".*[a-z].*") ) {
             productQuanlityInInteger = Integer.parseInt( productQuanlity.getText() );
         }
@@ -185,6 +186,8 @@ public class InvoiceController implements Initializable {
         if ( productNameSelected.isEmpty() ) {
             productNameSelected = "No Product Found";
         }
+        
+        String productPackage = (String) (discountPackage.getValue());
         
         if ( !tradePrice.getText().isEmpty() && !tradePrice.getText().matches(".*[a-z].*") ) {
             
@@ -197,15 +200,16 @@ public class InvoiceController implements Initializable {
             productDiscountSelected = 0;
         }
         
-        if ( productDiscountSelected == 0 ) {
+        if ( productDiscountSelected == 0 && productPackage == "Combine" ) {
             productAmountSelected = tradePriceSelected * productQuanlityInInteger;
         } else {
             float discount = ( (float) productDiscountSelected ) / 100;
-            productAmountSelected = (int) (( tradePriceSelected * productQuanlityInInteger ) * ( float )discount) ;
+            productAmountSelected = (float)((int) (( tradePriceSelected * productQuanlityInInteger ) * ( float )discount)) ;
+            productAmountSelected = (tradePriceSelected * productQuanlityInInteger ) - productAmountSelected; 
         }
         
         //System.out.print( productAmountSelected );
-        ProductTable productTable = new ProductTable( productQuanlityInInteger, productNameSelected, tradePriceSelected, productDiscountSelected, productAmountSelected);
+        ProductTable productTable = new ProductTable( productQuanlityInInteger, productNameSelected, tradePriceSelected, productDiscountSelected, (int)productAmountSelected);
         
         return productTable;
     }

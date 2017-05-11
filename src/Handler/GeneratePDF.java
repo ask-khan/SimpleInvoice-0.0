@@ -41,7 +41,7 @@ public class GeneratePDF {
         PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileOutputStream(Path));
         //Create BaseFont instance. 
         //Create BaseFont instance. 
-        BaseFont baseFont = BaseFont.createFont(BaseFont.COURIER, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+        BaseFont baseFont = BaseFont.createFont(BaseFont.COURIER_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
         int pages = pdfReader.getNumberOfPages();
         if (1 == pages) {
@@ -49,7 +49,7 @@ public class GeneratePDF {
             CustomerName.beginText();
             //Set text font and size. 
             CustomerName.setFontAndSize(baseFont, 13);
-            CustomerName.setTextMatrix(100, 470);
+            CustomerName.setTextMatrix(90, 665);
             //Write text 
             //System.out.println( CustomerData[0]);
             CustomerName.showText(CustomerData[0]);
@@ -59,7 +59,7 @@ public class GeneratePDF {
             billNo.beginText();
             //Set text font and size. 
             billNo.setFontAndSize(baseFont, 13);
-            billNo.setTextMatrix(65, 490);
+            billNo.setTextMatrix(90, 695);
             //Write text 
             billNo.showText(CustomerData[1]);
             billNo.endText();
@@ -68,12 +68,12 @@ public class GeneratePDF {
             submitDate.beginText();
             //Set text font and size. 
             submitDate.setFontAndSize(baseFont, 13);
-            submitDate.setTextMatrix(330, 490);
+            submitDate.setTextMatrix(465, 695);
             //Write text 
             submitDate.showText(CustomerData[2]);
             submitDate.endText();
 
-            int heightValue = 418;
+            int heightValue = 590;
             int totalPrice = 0;
             for (int i = 0; i < tableData.length(); i++) {
 
@@ -83,7 +83,7 @@ public class GeneratePDF {
                 productName.beginText();
                 //Set text font and size. 
                 productName.setFontAndSize(baseFont, 13);
-                productName.setTextMatrix(104, heightValue);
+                productName.setTextMatrix(155, heightValue);
 
                 //Write text 
                 productName.showText(tableData.getJSONObject(i).get("ProductName").toString());
@@ -94,7 +94,7 @@ public class GeneratePDF {
                 ProductQuanlity.beginText();
                 //Set text font and size. 
                 ProductQuanlity.setFontAndSize(baseFont, 13);
-                ProductQuanlity.setTextMatrix(27, heightValue);
+                ProductQuanlity.setTextMatrix(50, heightValue);
 
                 //Write text 
                 ProductQuanlity.showText(tableData.getJSONObject(i).get("Quanlity").toString());
@@ -106,7 +106,7 @@ public class GeneratePDF {
                     ProductDiscount.beginText();
                     //Set text font and size. 
                     ProductDiscount.setFontAndSize(baseFont, 13);
-                    ProductDiscount.setTextMatrix(327, heightValue);
+                    ProductDiscount.setTextMatrix(458, heightValue);
 
                     //Write text 
                     ProductDiscount.showText(tableData.getJSONObject(i).get("Discount").toString());
@@ -117,7 +117,7 @@ public class GeneratePDF {
                 ProductTradePrice.beginText();
                 //Set text font and size. 
                 ProductTradePrice.setFontAndSize(baseFont, 13);
-                ProductTradePrice.setTextMatrix(275, heightValue);
+                ProductTradePrice.setTextMatrix(395, heightValue);
 
                 //Write text 
                 ProductTradePrice.showText(tableData.getJSONObject(i).get("TradePrice").toString());
@@ -128,8 +128,10 @@ public class GeneratePDF {
                 ProductTotalPrice.beginText();
                 //Set text font and size. 
                 ProductTotalPrice.setFontAndSize(baseFont, 13);
-                ProductTotalPrice.setTextMatrix(365, heightValue);
+                ProductTotalPrice.setTextMatrix(510, heightValue);
                 heightValue = heightValue - 13;
+                    
+                
                 //Write text 
                 System.out.println(tableData.getJSONObject(i).get("Amount"));
                 ProductTotalPrice.showText(tableData.getJSONObject(i).get("Amount").toString());
@@ -146,7 +148,7 @@ public class GeneratePDF {
                 DiscountTotalMainPrice.beginText();
                 //Set text font and size. 
                 DiscountTotalMainPrice.setFontAndSize(baseFont, 13);
-                DiscountTotalMainPrice.setTextMatrix(327, 82);
+                DiscountTotalMainPrice.setTextMatrix(450, 110);
                 //Write text 
                 DiscountTotalMainPrice.showText(CustomerData[4] + " %");
                 DiscountTotalMainPrice.endText();
@@ -156,7 +158,7 @@ public class GeneratePDF {
                 ProductTotalMainPrice.beginText();
                 //Set text font and size. 
                 ProductTotalMainPrice.setFontAndSize(baseFont, 13);
-                ProductTotalMainPrice.setTextMatrix(365, 82);
+                ProductTotalMainPrice.setTextMatrix(510, 110);
 
                 float discountPrice = (float) totalPrice * ((float) Integer.parseInt(CustomerData[4]) / 100);
                 int finalPrice = totalPrice - (int) discountPrice;
@@ -170,7 +172,7 @@ public class GeneratePDF {
                 ProductTotalMainPrice.beginText();
                 //Set text font and size. 
                 ProductTotalMainPrice.setFontAndSize(baseFont, 13);
-                ProductTotalMainPrice.setTextMatrix(365, 82);
+                ProductTotalMainPrice.setTextMatrix(510, 110);
                 //Write text 
                 ProductTotalMainPrice.showText(Integer.toString(totalPrice));
                 ProductTotalMainPrice.endText();
