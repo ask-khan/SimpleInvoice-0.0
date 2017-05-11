@@ -58,7 +58,7 @@
             <TableColumn fx:id="productAmount" prefWidth="175.0" text="Amount" />
         </columns>
       </TableView>
-      <TextField fx:id="combineDiscount" layoutX="816.0" layoutY="503.0" prefHeight="29.0" prefWidth="169.0" promptText="Combine Discount" />
+      <TextField fx:id="combineDiscount" layoutX="816.0" layoutY="507.0" prefHeight="29.0" prefWidth="169.0" promptText="Combine Discount" />
       <Button layoutX="816.0" layoutY="585.0" mnemonicParsing="false" onAction="#printOnClick" prefHeight="29.0" prefWidth="169.0" text="Print Invoice" />
    </children>
 </AnchorPane>

@@ -28,6 +28,8 @@ import Handler.GeneratePDF;
 import com.itextpdf.text.DocumentException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,8 +78,6 @@ public class InvoiceController implements Initializable {
     @FXML
     private void onClickButton( ActionEvent event ) {
         
-        
-        
         ProductTable productTable  = calculateProcess(quanlity, productLine, tradePrice, individualDiscount);
         productData.add( productTable );
         
@@ -87,11 +87,20 @@ public class InvoiceController implements Initializable {
     private void printOnClick( ActionEvent event ) throws JSONException, IOException, DocumentException, PrinterException {
         
         String [] customersName = retieveCustomerData();
-        JSONArray tableData = getTableData();
-        GeneratePDF generatePDF = new GeneratePDF();
+        if ( customersName != null ) {
+            JSONArray tableData = getTableData();
+            GeneratePDF generatePDF = new GeneratePDF();
+            if ( "Combine".equals(customersName[3]) ) {
+                customersName[4] = combineDiscount.getText();
+                if ( "".equals(customersName[4]) ) {
+                    combineDiscount.getStyleClass().add("error");
+                } 
+             }
+
+            String filePath =  generatePDF.GeneratePDFDoc( customersName, tableData );
+            generatePDF.PrintPDF( filePath );
+        }
         
-        String filePath =  generatePDF.GeneratePDFDoc( customersName, tableData );
-        generatePDF.PrintPDF( filePath );
     }
     
     
@@ -123,11 +132,19 @@ public class InvoiceController implements Initializable {
         
         customerData[3] =  (String) discountPackage.getValue();
         
-        if ( customerData[4] == null) {
+        if ( customerData[3] == null ) {
             discountPackage.getStyleClass().add("error");
+            //System.exit(0);
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Look, an Error Dialog");
+            alert.setContentText("Ooops, there was an error!");
+            alert.showAndWait();
+           return null;
+        } else {
+            return customerData;
         }
         
-        return customerData;
     }
     
     public JSONArray getTableData () throws JSONException {
@@ -149,11 +166,13 @@ public class InvoiceController implements Initializable {
                 
                 tableInvoiceProductsData.put(tableData);
             }
-            
+            return tableInvoiceProductsData;
         } else {
             System.out.println("No data is Add");
+            //System.exit(0);
+            return null;
         }
-        return tableInvoiceProductsData;
+        
     }
     
     public  ProductTable calculateProcess ( TextField productQuanlity, ChoiceBox productName, TextField tradePrice, TextField productDiscount ) {
@@ -185,7 +204,7 @@ public class InvoiceController implements Initializable {
             productAmountSelected = (int) (( tradePriceSelected * productQuanlityInInteger ) * ( float )discount) ;
         }
         
-        System.out.print( productAmountSelected );
+        //System.out.print( productAmountSelected );
         ProductTable productTable = new ProductTable( productQuanlityInInteger, productNameSelected, tradePriceSelected, productDiscountSelected, productAmountSelected);
         
         return productTable;
@@ -198,7 +217,7 @@ public class InvoiceController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         final String[] discountPackages = new String[] { "Combine", "Individuals" };
-        ObservableList<String> productNames = FXCollections.observableArrayList("Product A", "Product B");
+        ObservableList<String> productNames = FXCollections.observableArrayList("Astexim 100mg Susp", "Astexim 200mg Susp","Astexim 200mg Cap", "Astexim 400mg Cap","Astexone 250mg IV Inj", "Astexone 250mg IM Inj", "Astexone 500mg IM Inj","Astexone 500mg IV Inj", "Astexone 1gm IM Inj","Astoxil 125mg Susp","Astoxil 250mg Susp", "Moreapt Susp", "Kanlvy Susp", "Kan Benrry", "Achfree");
         productLine.setItems(productNames);
         
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -221,7 +240,7 @@ public class InvoiceController implements Initializable {
             }
           }
         });
-        
+        productTable.setEditable(true);
         // TODO
         productName.setCellValueFactory(new PropertyValueFactory<ProductTable, String>("productName"));
         productQuanlity.setCellValueFactory(new PropertyValueFactory<ProductTable,Integer>("productQuanlity"));
