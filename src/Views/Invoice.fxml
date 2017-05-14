@@ -48,7 +48,7 @@
       </Label>
       <ChoiceBox fx:id="discountPackage" layoutX="201.0" layoutY="119.0" prefHeight="25.0" prefWidth="219.0" />
       <TextField fx:id="individualDiscount" layoutX="40.0" layoutY="285.0" prefHeight="29.0" prefWidth="205.0" promptText="Discount" />
-      <Button fx:id="addButton" layoutX="746.0" layoutY="279.0" mnemonicParsing="false" onAction="#onClickButton" prefHeight="29.0" prefWidth="120.0" text="Add " />
+      <Button fx:id="addButton" layoutX="746.0" layoutY="279.0" mnemonicParsing="false" onAction="#onClickAddButton" prefHeight="29.0" prefWidth="120.0" text="Add " />
       <TableView fx:id="productTable" layoutX="7.0" layoutY="347.0" prefHeight="332.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="199.0">
         <columns>
             <TableColumn fx:id="productQuanlity" prefWidth="98.0" text="Quanlity" />

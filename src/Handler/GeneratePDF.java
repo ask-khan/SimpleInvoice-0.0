@@ -10,20 +10,18 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-import java.awt.print.Book;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javax.print.PrintServiceLookup;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import javax.print.PrintService;
 
 /**
@@ -130,8 +128,7 @@ public class GeneratePDF {
                 ProductTotalPrice.setFontAndSize(baseFont, 13);
                 ProductTotalPrice.setTextMatrix(510, heightValue);
                 heightValue = heightValue - 13;
-                    
-                
+
                 //Write text 
                 System.out.println(tableData.getJSONObject(i).get("Amount"));
                 ProductTotalPrice.showText(tableData.getJSONObject(i).get("Amount").toString());
@@ -184,26 +181,98 @@ public class GeneratePDF {
         return Path;
     }
 
+    /**
+     * This method is used for print PDF
+     *
+     * @param Path Path of the PDF.
+     * @exception IOException On input error.
+     * @exception PrinterException On print error.
+     * @see IOException
+     * @see PrinterException
+     */
     public void PrintPDF(String Path) throws IOException, PrinterException {
+        // Create PDDocument
         PDDocument document = PDDocument.load(new File(Path));
+        // Function Call for PrintService.
         PrintService myPrintService = findPrintService("hp LaserJet 3015 UPD PCL 5");
-
+        // Get PrinterJob.
         PrinterJob job = PrinterJob.getPrinterJob();
-
+        // Show Dialog
         job.printDialog();
+        // Set Page for Path
         job.setPageable(new PDFPageable(document));
+        // Set Print Service
         job.setPrintService(myPrintService);
+        // Job Print Function
         job.print();
     }
 
+    /**
+     * This Method is used to find the Print Service
+     *
+     * @param printerName This is the name of the Printer
+     * @return PrintService This will return the PrinterServuce Object.
+     */
     private static PrintService findPrintService(String printerName) {
+        // Declare PrintService Object.
         PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+        // For Loop 
         for (PrintService printService : printServices) {
-            System.out.println(printService.getName().trim());
+            //System.out.println(printService.getName().trim());
             if (printService.getName().trim().equals(printerName)) {
                 return printService;
             }
         }
         return null;
+    }
+
+    /**
+     * This Method is used to find the Print Service
+     *
+     * @param attributeName Used for attribute Name
+     * @param errorIntCode Used for error Code
+     */
+    public void ShowDialog(String attributeName, int errorIntCode) {
+        String errorMessage = "", errorTitle = "";
+
+        switch (errorIntCode) {
+            case 1:
+                errorTitle = "Validation Error";
+                errorMessage = attributeName + " is Empty.";
+                break;
+            case 2:
+                errorTitle = "Validation Error";
+                errorMessage = "User information or Bill no is not filled Properly.";
+                break;
+            case 3:
+                errorTitle = "Validation Error";
+                errorMessage = "User information or Bill no have invalid entry.";
+                break;
+            case 4:
+                errorTitle = "Warming Error";
+                errorMessage = "Discount Package is not select yet.";
+                break;
+            case 5:
+                errorTitle = "Table Error";
+                errorMessage = "Table is empty.";
+                break;
+            case 6:
+                errorTitle = "Table Error";
+                errorMessage = "Table fields entry are empty or invalid.";
+                break;
+            case 7:
+                errorTitle = "Validation Error";
+                errorMessage = "Combine discount field is empty.";
+                break;
+            default:
+                break;
+        }
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(attributeName);
+        alert.setHeaderText(null);
+        alert.setContentText(errorMessage);
+
+        alert.showAndWait();
     }
 }
