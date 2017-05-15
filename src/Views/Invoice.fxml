@@ -11,16 +11,11 @@
 
 <AnchorPane fx:id="progressorButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.InvoiceController">
    <children>
-      <MenuBar layoutX="87.0" layoutY="75.0" AnchorPane.bottomAnchor="669.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar fx:id="MenuNewBar" layoutX="87.0" layoutY="75.0" AnchorPane.bottomAnchor="669.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem fx:id="NewMenuItem" mnemonicParsing="false" text="New" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
