@@ -28,10 +28,15 @@ import Handler.GeneratePDF;
 import com.itextpdf.text.DocumentException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 /**
  * FXML Controller class
@@ -63,7 +68,18 @@ public class InvoiceController implements Initializable {
     private TableView<ProductTable> productTable = new TableView<ProductTable>();
 
     private Boolean checkValidation = false;
-
+        
+    //Declare Menu Bar
+    @FXML
+    MenuBar MenuNewBar;
+    
+    //Declare Menu
+    @FXML
+    Menu fileMenu;
+    
+    // Declare File Menu
+    @FXML
+    MenuItem NewMenuItem ;
     // Declare Progress Indicator.
     @FXML
     ProgressIndicator printingIndicator = new ProgressIndicator();
@@ -83,6 +99,11 @@ public class InvoiceController implements Initializable {
     // Declare Observabilelist.
     @FXML
     private final ObservableList<ProductTable> productData = FXCollections.observableArrayList();
+    
+    @FXML
+    private void NewMenuItemFunction( ActionEvent event ) {
+        System.out.println("Controllers.InvoiceController.newMenuItem()");
+    }
 
     /**
      * This method is used to add the row columns into table
@@ -98,6 +119,8 @@ public class InvoiceController implements Initializable {
         }
 
     }
+    
+    
     
     /**
      * This method is used for print PDF Button
@@ -332,6 +355,16 @@ public class InvoiceController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Declare discountPackage variable for choicebox.
         final String[] discountPackages = new String[]{"Combine", "Individuals"};
+       
+        // When user click on the Exit item.
+        fileMenu.setOnAction((ActionEvent event) -> {
+            customerName.setText("");
+            billNo.setText("");
+            quanlity.setText("");
+            tradePrice.setText("");
+            individualDiscount.setText("");
+            combineDiscount.setText("");
+        });
         
         // Declare Product item for choice Box. 
         ObservableList<String> productNames = FXCollections.observableArrayList("Astexim 100mg Susp", "Astexim 200mg Susp", "Astexim 200mg Cap", "Astexim 400mg Cap", "Astexone 250mg IV Inj", "Astexone 250mg IM Inj", "Astexone 500mg IM Inj", "Astexone 500mg IV Inj", "Astexone 1gm IM Inj", "Astoxil 125mg Susp", "Astoxil 250mg Susp", "Moreapt Susp", "Kanlvy Susp", "Kan Benrry", "Achfree");
@@ -364,6 +397,7 @@ public class InvoiceController implements Initializable {
             }
         });
         
+       
         // Set Values for table
         productName.setCellValueFactory(new PropertyValueFactory<ProductTable, String>("productName"));
         productQuanlity.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productQuanlity"));
