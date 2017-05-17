@@ -7,7 +7,6 @@ package Controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -28,6 +27,9 @@ import Handler.GeneratePDF;
 import com.itextpdf.text.DocumentException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Optional;
+import javafx.beans.binding.Bindings;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -36,7 +38,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  * FXML Controller class
@@ -58,11 +61,7 @@ public class InvoiceController implements Initializable {
     public ChoiceBox<String> productLine = new ChoiceBox<String>();
     @FXML
     public ChoiceBox<String> discountPackage = new ChoiceBox<String>();
-
-    // Create Button
-    @FXML
-    public Button addButton, printButton;
-
+    
     // Declare TableView Variable.
     @FXML
     private TableView<ProductTable> productTable = new TableView<ProductTable>();
@@ -100,10 +99,12 @@ public class InvoiceController implements Initializable {
     @FXML
     private final ObservableList<ProductTable> productData = FXCollections.observableArrayList();
     
+    // Create Button
     @FXML
-    private void NewMenuItemFunction( ActionEvent event ) {
-        System.out.println("Controllers.InvoiceController.newMenuItem()");
-    }
+    public Button addButton, printButton ;
+    
+    @FXML
+    public Button deleteButton;
 
     /**
      * This method is used to add the row columns into table
@@ -168,6 +169,31 @@ public class InvoiceController implements Initializable {
 
     }
 
+    /**
+     * Add Delete Button
+     *
+     * @param event
+     */
+    @FXML
+    private void ButtonDeleteAction(ActionEvent event) {
+        // Alert Dialog Code.
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Product");
+        alert.setContentText("Are you sure you want to delete this Product?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // If Button is Yes.
+        if (result.get() == ButtonType.OK) {
+            //System.out.println("OK");
+            ProductTable addProduct = productTable.getSelectionModel().getSelectedItem();
+            // Remove Peoduct
+            productData.remove( addProduct );
+            // Function Call For Delete Product By Product Code.
+        } else {
+            System.out.println("Delete");
+        }
+    }
+    
     /**
      * This method is used to retrieve customer data
      * @return 
@@ -355,8 +381,10 @@ public class InvoiceController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Declare discountPackage variable for choicebox.
         final String[] discountPackages = new String[]{"Combine", "Individuals"};
-       
-        // When user click on the Exit item.
+        
+        deleteButton.disableProperty().bind(Bindings.isEmpty(productTable.getSelectionModel().getSelectedItems()));
+        
+        // When user click on the New Invoice item.
         fileMenu.setOnAction((ActionEvent event) -> {
             customerName.setText("");
             billNo.setText("");
