@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 
 /**
  * FXML Controller class
@@ -48,6 +49,10 @@ import javafx.scene.control.ButtonType;
  */
 public class InvoiceController implements Initializable {
 
+    //Create CheckBox
+    @FXML
+    public CheckBox generatePrinter;
+    
     // Create TextField
     @FXML
     public TextField customerName, billNo, quanlity, tradePrice, individualDiscount, combineDiscount;
@@ -115,6 +120,7 @@ public class InvoiceController implements Initializable {
     private void onClickAddButton(ActionEvent event) {
         
         ProductTable producTableObject = calculateProcess(quanlity, productLine, tradePrice, individualDiscount, discountPackage);
+        
         if (producTableObject != null) {
             productData.add(producTableObject);
         }
@@ -158,8 +164,14 @@ public class InvoiceController implements Initializable {
                         combineDiscount.getStyleClass().add("error");
                         generatePDF.ShowDialog("", 7);
                     } else {
-                        String filePath = generatePDF.GeneratePDFDoc(customersName, tableData);
-                        generatePDF.PrintPDF( filePath );
+                        // if checkbox is selected
+                        if ( generatePrinter.isSelected() ) {
+                            String filePath = generatePDF.GeneratePDFDoc(customersName, tableData);
+                            generatePDF.PrintPDF( filePath );
+                        } else {
+                            generatePDF.GeneratePDFDoc(customersName, tableData);
+                            generatePDF.ShowDialog("", 8);
+                        }
                     }
                 }
 

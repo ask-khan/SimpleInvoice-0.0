@@ -29,6 +29,17 @@ import javax.print.PrintService;
  * @author Ahmed Saboor
  */
 public class GeneratePDF {
+    
+    /**
+     * This Method is used to generate PDF.
+     *
+     * @param CustomerData
+     * @param tableData
+     * @return 
+     * @throws java.io.IOException
+     * @throws com.itextpdf.text.DocumentException
+     * @throws org.json.JSONException
+     */
 
     public String GeneratePDFDoc(String[] CustomerData, JSONArray tableData) throws IOException, DocumentException, JSONException {
 
@@ -263,6 +274,10 @@ public class GeneratePDF {
             case 7:
                 errorTitle = "Validation Error";
                 errorMessage = "Combine discount field is empty.";
+                break;
+            case 8:
+                errorTitle = "Good News";
+                errorMessage = "PDF created Successfully:)";
                 break;
             default:
                 break;
