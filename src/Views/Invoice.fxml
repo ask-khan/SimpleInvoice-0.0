@@ -54,7 +54,8 @@
         </columns>
       </TableView>
       <TextField fx:id="combineDiscount" layoutX="816.0" layoutY="507.0" prefHeight="29.0" prefWidth="169.0" promptText="Combine Discount" />
-      <Button layoutX="816.0" layoutY="585.0" mnemonicParsing="false" onAction="#printOnClick" prefHeight="29.0" prefWidth="169.0" text="Print Invoice" />
+      <Button layoutX="816.0" layoutY="603.0" mnemonicParsing="false" onAction="#printOnClick" prefHeight="29.0" prefWidth="169.0" text="Generate Invoice" />
       <Button fx:id="deleteButton" layoutX="816.0" layoutY="420.0" mnemonicParsing="false" onAction="#ButtonDeleteAction" prefHeight="29.0" prefWidth="169.0" text="Delete" />
+      <CheckBox fx:id="generatePrinter" layoutX="816.0" layoutY="560.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="169.0" text="Print " />
    </children>
 </AnchorPane>
