@@ -48,7 +48,10 @@ import javafx.scene.control.CheckBox;
  * @author Ahmed Saboor
  */
 public class InvoiceController implements Initializable {
-
+    
+    // Create String 
+    final String[] productPrice = new String[]{"119", "204", "255", "140", "25", "85", "85", "127.50", "127.50", "212.50", "86", "157", "148.75", "148.75", "","" };
+    
     //Create CheckBox
     @FXML
     public CheckBox generatePrinter;
@@ -111,6 +114,8 @@ public class InvoiceController implements Initializable {
     @FXML
     public Button deleteButton;
 
+    
+    
     /**
      * This method is used to add the row columns into table
      *
@@ -437,7 +442,17 @@ public class InvoiceController implements Initializable {
             }
         });
         
-       
+        
+        productLine.getSelectionModel().selectedIndexProperty().addListener(new
+            ChangeListener<Number>() {
+                public void changed(ObservableValue ov,
+                    Number value, Number new_value) {
+                    
+                    tradePrice.setText(productPrice[new_value.intValue()]);
+                }
+        });
+
+        
         // Set Values for table
         productName.setCellValueFactory(new PropertyValueFactory<ProductTable, String>("productName"));
         productQuanlity.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productQuanlity"));
