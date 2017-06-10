@@ -178,6 +178,16 @@ public class InvoiceController implements Initializable {
                             generatePDF.ShowDialog("", 8);
                         }
                     }
+                    
+                } else {
+                    // if checkbox is selected
+                    if ( generatePrinter.isSelected() ) {
+                        String filePath = generatePDF.GeneratePDFDoc(customersName, tableData);
+                        generatePDF.PrintPDF( filePath );
+                    } else {
+                        generatePDF.GeneratePDFDoc(customersName, tableData);
+                        generatePDF.ShowDialog("", 8);
+                    }   
                 }
 
             }
