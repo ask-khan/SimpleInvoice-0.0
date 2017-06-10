@@ -368,13 +368,13 @@ public class InvoiceController implements Initializable {
         String productPackage = (String) (discountPackage.getValue());
         // If trade price is empty and not contain a to z.
         if (!tradePrice.getText().isEmpty() && !tradePrice.getText().matches(".*[a-z].*")) {
-            tradePriceSelected = Integer.parseInt(tradePrice.getText());
+            tradePriceSelected = (int) Math.round(Float.parseFloat(tradePrice.getText()));
         } else {
             validationError = true;
         }
         // If product discount is empty and not contain a to z.
         if (!productDiscount.getText().isEmpty() && !productDiscount.getText().matches(".*[a-z].*")) {
-            productDiscountSelected = (Integer.parseInt(productDiscount.getText()) == 0) ? 0 : Integer.parseInt(productDiscount.getText());
+            productDiscountSelected =  ( (int) Integer.parseInt(productDiscount.getText()) == 0) ? 0 : (int) Integer.parseInt(productDiscount.getText());
         } else {
             productDiscountSelected = 0;
             productDiscount.setText("0");
