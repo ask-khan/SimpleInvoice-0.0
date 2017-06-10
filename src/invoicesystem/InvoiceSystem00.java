@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -26,6 +27,7 @@ public class InvoiceSystem00 extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/Views/Invoice.fxml"));
         
         stage.setTitle("Invoice System");
+        stage.getIcons().add( new Image("file:user-icon.png"));
         Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("/Styles/invoice.css").toExternalForm());
         stage.setScene(scene);
