@@ -22,14 +22,21 @@ public class ProductTable {
     private final IntegerProperty productTradePrice;
     private final IntegerProperty productDiscount;
     private final IntegerProperty productAmount;
-
+    private final IntegerProperty productBonus; 
+    private final IntegerProperty productPacking;
+    
+    
+    
+    
     // Constructor Product Table.
-    public ProductTable(int productQuanlity, String productName, int tradePrice, int productDiscount, int productAmount) {
-        this.productQuanlity = new SimpleIntegerProperty(productQuanlity);
-        this.productName = new SimpleStringProperty(productName);
-        this.productTradePrice = new SimpleIntegerProperty(tradePrice);
-        this.productDiscount = new SimpleIntegerProperty(productDiscount);
+    public ProductTable(int productQuanlity, String productName, int tradePrice, int productDiscount, int productAmount, int productBonus, int productPacking ) {
+        this.productQuanlity = new SimpleIntegerProperty( productQuanlity );
+        this.productName = new SimpleStringProperty( productName );
+        this.productTradePrice = new SimpleIntegerProperty( tradePrice );
+        this.productDiscount = new SimpleIntegerProperty( productDiscount );
         this.productAmount = new SimpleIntegerProperty(productAmount);
+        this.productBonus = new SimpleIntegerProperty( productBonus );
+        this.productPacking = new SimpleIntegerProperty( productPacking );
     }
 
     public int getProductQuanlity() {
@@ -52,6 +59,14 @@ public class ProductTable {
         return productAmount.get();
     }
     
+    public int getProductBonus(){
+        return productBonus.get();
+    }
+    
+    public int getProductPacking() {
+        return productPacking.get();
+    }
+    
     public void setProductAmount( int productAmount ){
         this.productAmount.set( productAmount );
     }
@@ -70,5 +85,13 @@ public class ProductTable {
     
     public void setProductName ( String productName ) {
         this.productName.set(productName);
+    }
+    
+    public void setProductBonus ( int productBonus ) {
+        this.productAmount.set(productBonus);
+    }
+    
+    public void setProductPacking ( int productPacking ) {
+        this.productPacking.set(productPacking);
     }
 }

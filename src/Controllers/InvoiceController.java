@@ -48,17 +48,17 @@ import javafx.scene.control.CheckBox;
  * @author Ahmed Saboor
  */
 public class InvoiceController implements Initializable {
-    
+        
     // Create Product Price.
     final String[] productPrice = new String[]{"119", "204", "255", "140", "25", "85", "85", "127.50", "127.50", "212.50", "86", "157", "148.75", "148.75", "","" };
-    
+    final String[] productPackageList = new String[]{"1", "1", "5", "5", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"};
     //Create CheckBox
     @FXML
     public CheckBox generatePrinter;
     
     // Create TextField
     @FXML
-    public TextField customerName, billNo, quanlity, tradePrice, individualDiscount, combineDiscount;
+    public TextField customerName, billNo, quanlity, tradePrice, individualDiscount, combineDiscount, bonusDiscount;
 
     // Create DatePicker
     @FXML
@@ -102,10 +102,17 @@ public class InvoiceController implements Initializable {
     private TableColumn<ProductTable, Integer> productDiscount;
     @FXML
     private TableColumn<ProductTable, Integer> productAmount;
-
+    @FXML
+    private TableColumn<ProductTable, Integer> productBonus;
+    @FXML
+    private TableColumn<ProductTable, Integer> productPacking;
+    
     // Declare Observabilelist.
     @FXML
     private final ObservableList<ProductTable> productData = FXCollections.observableArrayList();
+    
+    // Declare Packing
+    String selectedProductPacking;
     
     // Create Button
     @FXML
@@ -124,7 +131,7 @@ public class InvoiceController implements Initializable {
     @FXML
     private void onClickAddButton(ActionEvent event) {
         
-        ProductTable producTableObject = calculateProcess(quanlity, productLine, tradePrice, individualDiscount, discountPackage);
+        ProductTable producTableObject = calculateProcess(quanlity, productLine, tradePrice, individualDiscount, discountPackage, bonusDiscount, selectedProductPacking);
         
         if (producTableObject != null) {
             productData.add(producTableObject);
@@ -317,7 +324,8 @@ public class InvoiceController implements Initializable {
                 tableData.put("Discount", productTables.getProductDiscount());
                 tableData.put("TradePrice", productTables.getProductTradePrice());
                 tableData.put("Amount", productTables.getProductAmount());
-
+                tableData.put("Bonus", productTables.getProductBonus());
+                tableData.put("Packing", productTables.getProductPacking());
                 tableInvoiceProductsData.put(tableData);
             }
             // Return
@@ -341,16 +349,18 @@ public class InvoiceController implements Initializable {
      * @param discountPackage used for product package
      * @return 
      */
-    public ProductTable calculateProcess(TextField productQuanlity, ChoiceBox productName, TextField tradePrice, TextField productDiscount, ChoiceBox discountPackage) {
+    public ProductTable calculateProcess(TextField productQuanlity, ChoiceBox productName, TextField tradePrice, TextField productDiscount, ChoiceBox discountPackage, TextField individualDiscount, String selectedProductPacking) {
         // Declare generatePDF object
         GeneratePDF generatePDF = new GeneratePDF();
         
-         // Declare validation error.
+        // Declare validation error.
         boolean validationError = false;
         // Declare integer variable for calculation.
         int productQuanlityInInteger = 0, tradePriceSelected = 0, productDiscountSelected = 0;
         // Declare float variable.
         float productAmountSelected = 0;
+        // Declare interger variable.
+        int productBonus = 0;
         
         // If product Quanlity is empty and not contain a to z.
         if (!productQuanlity.getText().isEmpty() && !productQuanlity.getText().matches(".*[a-z].*")) {
@@ -358,6 +368,11 @@ public class InvoiceController implements Initializable {
         } else {
             validationError = true;
         }
+        
+        // If product Quanlity is empty and not contain a to z.
+        if (!bonusDiscount.getText().isEmpty() && !bonusDiscount.getText().matches(".*[a-z].*")) {
+            productBonus = Integer.parseInt(bonusDiscount.getText());
+        } 
         // Get selected values
         String productNameSelected = (productName.getSelectionModel().getSelectedItem() == null) ? "null" : (String) productName.getSelectionModel().getSelectedItem().toString();
         // Check Product Selected is null or not.
@@ -379,21 +394,28 @@ public class InvoiceController implements Initializable {
             productDiscountSelected = 0;
             productDiscount.setText("0");
         }
+        System.out.println( productPackage );
         // Check if discount value is zero.
         if (productDiscountSelected == 0 && "Combine".equals(productPackage)) {
+            productAmountSelected = tradePriceSelected * productQuanlityInInteger;
+            productBonus = 0;
+            
+        } else if (productDiscountSelected == 0 && "Bonus".equals(productPackage)) {
             productAmountSelected = tradePriceSelected * productQuanlityInInteger;
         } else {
             float discount = ((float) productDiscountSelected) / 100;
             productAmountSelected = (float) ((int) ((tradePriceSelected * productQuanlityInInteger) * (float) discount));
             productAmountSelected = (tradePriceSelected * productQuanlityInInteger) - productAmountSelected;
+            productBonus = 0;
         }
         // Check validation 
         if (validationError == true) {
             generatePDF.ShowDialog("", 6);
             return null;
         } else {
+            
             //System.out.print( productAmountSelected );
-            ProductTable productTable = new ProductTable(productQuanlityInInteger, productNameSelected, tradePriceSelected, productDiscountSelected, (int) productAmountSelected);
+            ProductTable productTable = new ProductTable(productQuanlityInInteger, productNameSelected, tradePriceSelected, productDiscountSelected, (int) productAmountSelected, (int)productBonus,  Integer.parseInt(selectedProductPacking));
             return productTable;
         }
 
@@ -407,7 +429,7 @@ public class InvoiceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Declare discountPackage variable for choicebox.
-        final String[] discountPackages = new String[]{"Combine", "Individuals"};
+        final String[] discountPackages = new String[]{"Combine", "Individuals", "Bonus"};
         
         deleteButton.disableProperty().bind(Bindings.isEmpty(productTable.getSelectionModel().getSelectedItems()));
         
@@ -416,7 +438,7 @@ public class InvoiceController implements Initializable {
             customerName.setText("");
             billNo.setText("");
             quanlity.setText("");
-            tradePrice.setText("");
+            tradePrice.setText(""); 
             individualDiscount.setText("");
             combineDiscount.setText("");
         });
@@ -434,7 +456,7 @@ public class InvoiceController implements Initializable {
         datePicker.setValue(now);
         
         // Declare Packages for choicebox
-        ObservableList<String> cursors = FXCollections.observableArrayList("Combine", "Individuals");
+        ObservableList<String> cursors = FXCollections.observableArrayList("Combine", "Individuals", "Bonus");
         discountPackage.setItems(cursors);
         
         // Get Select Choice Box value whenever its change.
@@ -443,11 +465,17 @@ public class InvoiceController implements Initializable {
             public void changed(ObservableValue observable, Number value, Number new_value) {
                 // Check if discount package is equal to combine
                 if (discountPackages[new_value.intValue()].equals("Combine")) {
+                    bonusDiscount.setVisible(false);
                     individualDiscount.setVisible(false);
                     combineDiscount.setVisible(true);
-                } else {
+                } else if (discountPackages[new_value.intValue()].equals("Individuals")) {
                     combineDiscount.setVisible(false);
+                    bonusDiscount.setVisible(false);
                     individualDiscount.setVisible(true);
+                } else {
+                    bonusDiscount.setVisible(true);
+                    combineDiscount.setVisible(false);
+                    individualDiscount.setVisible(false);
                 }
             }
         });
@@ -460,6 +488,7 @@ public class InvoiceController implements Initializable {
                     Number value, Number new_value) {
                     // Set Trade Price
                     tradePrice.setText(productPrice[new_value.intValue()]);
+                    selectedProductPacking = productPackageList[new_value.intValue()];
                 }
         });
 
@@ -470,6 +499,9 @@ public class InvoiceController implements Initializable {
         productTradePrice.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productTradePrice"));
         productDiscount.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productDiscount"));
         productAmount.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productAmount"));
+        productBonus.setCellValueFactory(new PropertyValueFactory<ProductTable, Integer>("productBonus"));
+        productPacking.setCellValueFactory( new PropertyValueFactory<ProductTable, Integer>("productPacking"));
+        
         productTable.setItems(productData);
     }
 

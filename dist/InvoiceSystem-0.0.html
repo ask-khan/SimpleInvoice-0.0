@@ -1,9 +1,10 @@
 <html><head>
-  <SCRIPT src="http://java.com/js/dtjava.js"></SCRIPT>
+  <SCRIPT src="./web-files/dtjava.js"></SCRIPT>
 <script>
     function launchApplication(jnlpfile) {
         dtjava.launch(            {
-                url : 'InvoiceSystem-0.0.jnlp'
+                url : 'InvoiceSystem-0.0.jnlp',
+                jnlp_content : 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxqbmxwIHNwZWM9IjEuMCIgeG1sbnM6amZ4PSJodHRwOi8vamF2YWZ4LmNvbSIgaHJlZj0iSW52b2ljZVN5c3RlbS0wLjAuam5scCI+DQogIDxpbmZvcm1hdGlvbj4NCiAgICA8dGl0bGU+SW52b2ljZVN5c3RlbS0wLjA8L3RpdGxlPg0KICAgIDx2ZW5kb3I+QWhtZWQgU2Fib29yPC92ZW5kb3I+DQogICAgPGRlc2NyaXB0aW9uPm51bGw8L2Rlc2NyaXB0aW9uPg0KICAgIDxvZmZsaW5lLWFsbG93ZWQvPg0KICA8c2hvcnRjdXQ+PGRlc2t0b3AvPjwvc2hvcnRjdXQ+DQogIDwvaW5mb3JtYXRpb24+DQogIDxyZXNvdXJjZXM+DQogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPg0KICAgIDxqYXIgaHJlZj0iSW52b2ljZVN5c3RlbS0wLjAuamFyIiBzaXplPSIxNzM4MCIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGl0ZXh0cGRmLTUuNC4xLi5qYXIiIHNpemU9IjE4OTg0MTciIGRvd25sb2FkPSJlYWdlciIgLz4NCiAgICA8amFyIGhyZWY9ImxpYlxvcmcuanNvbi5qYXIiIHNpemU9IjQ4Nzk2IiBkb3dubG9hZD0iZWFnZXIiIC8+DQogICAgPGphciBocmVmPSJsaWJccGRmYm94LWFwcC0yLjAuNS5qYXIiIHNpemU9IjgwMDM2NjAiIGRvd25sb2FkPSJlYWdlciIgLz4NCiAgPC9yZXNvdXJjZXM+DQogIDxhcHBsZXQtZGVzYyAgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIG1haW4tY2xhc3M9ImNvbS5qYXZhZngubWFpbi5Ob0phdmFGWEZhbGxiYWNrIiAgbmFtZT0iSW52b2ljZVN5c3RlbS0wLjAiID4NCiAgICA8cGFyYW0gbmFtZT0icmVxdWlyZWRGWFZlcnNpb24iIHZhbHVlPSI4LjArIi8+DQogIDwvYXBwbGV0LWRlc2M+DQogIDxqZng6amF2YWZ4LWRlc2MgIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBtYWluLWNsYXNzPSJpbnZvaWNlc3lzdGVtLkludm9pY2VTeXN0ZW0wMCIgIG5hbWU9Ikludm9pY2VTeXN0ZW0tMC4wIiAvPg0KICA8dXBkYXRlIGNoZWNrPSJhbHdheXMiLz4NCjwvam5scD4NCg=='
             },
             {
                 javafx : '8.0+'
@@ -22,7 +23,8 @@
                 url : 'InvoiceSystem-0.0.jnlp',
                 placeholder : 'javafx-app-placeholder',
                 width : '800',
-                height : '600'
+                height : '600',
+                jnlp_content : 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxqbmxwIHNwZWM9IjEuMCIgeG1sbnM6amZ4PSJodHRwOi8vamF2YWZ4LmNvbSIgaHJlZj0iSW52b2ljZVN5c3RlbS0wLjAuam5scCI+DQogIDxpbmZvcm1hdGlvbj4NCiAgICA8dGl0bGU+SW52b2ljZVN5c3RlbS0wLjA8L3RpdGxlPg0KICAgIDx2ZW5kb3I+QWhtZWQgU2Fib29yPC92ZW5kb3I+DQogICAgPGRlc2NyaXB0aW9uPm51bGw8L2Rlc2NyaXB0aW9uPg0KICAgIDxvZmZsaW5lLWFsbG93ZWQvPg0KICA8c2hvcnRjdXQ+PGRlc2t0b3AvPjwvc2hvcnRjdXQ+DQogIDwvaW5mb3JtYXRpb24+DQogIDxyZXNvdXJjZXM+DQogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPg0KICAgIDxqYXIgaHJlZj0iSW52b2ljZVN5c3RlbS0wLjAuamFyIiBzaXplPSIxNzM4MCIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGl0ZXh0cGRmLTUuNC4xLi5qYXIiIHNpemU9IjE4OTg0MTciIGRvd25sb2FkPSJlYWdlciIgLz4NCiAgICA8amFyIGhyZWY9ImxpYlxvcmcuanNvbi5qYXIiIHNpemU9IjQ4Nzk2IiBkb3dubG9hZD0iZWFnZXIiIC8+DQogICAgPGphciBocmVmPSJsaWJccGRmYm94LWFwcC0yLjAuNS5qYXIiIHNpemU9IjgwMDM2NjAiIGRvd25sb2FkPSJlYWdlciIgLz4NCiAgPC9yZXNvdXJjZXM+DQogIDxhcHBsZXQtZGVzYyAgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIG1haW4tY2xhc3M9ImNvbS5qYXZhZngubWFpbi5Ob0phdmFGWEZhbGxiYWNrIiAgbmFtZT0iSW52b2ljZVN5c3RlbS0wLjAiID4NCiAgICA8cGFyYW0gbmFtZT0icmVxdWlyZWRGWFZlcnNpb24iIHZhbHVlPSI4LjArIi8+DQogIDwvYXBwbGV0LWRlc2M+DQogIDxqZng6amF2YWZ4LWRlc2MgIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBtYWluLWNsYXNzPSJpbnZvaWNlc3lzdGVtLkludm9pY2VTeXN0ZW0wMCIgIG5hbWU9Ikludm9pY2VTeXN0ZW0tMC4wIiAvPg0KICA8dXBkYXRlIGNoZWNrPSJhbHdheXMiLz4NCjwvam5scD4NCg=='
             },
             {
                 javafx : '8.0+'

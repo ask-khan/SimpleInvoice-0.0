@@ -42,20 +42,23 @@
          </font>
       </Label>
       <ChoiceBox fx:id="discountPackage" layoutX="201.0" layoutY="119.0" prefHeight="25.0" prefWidth="219.0" />
-      <TextField fx:id="individualDiscount" layoutX="40.0" layoutY="285.0" prefHeight="29.0" prefWidth="205.0" promptText="Discount" />
+      <TextField fx:id="individualDiscount" layoutX="40.0" layoutY="285.0" prefHeight="29.0" prefWidth="205.0" promptText="Discount" visible="false" />
       <Button fx:id="addButton" layoutX="746.0" layoutY="279.0" mnemonicParsing="false" onAction="#onClickAddButton" prefHeight="29.0" prefWidth="120.0" text="Add " />
       <TableView fx:id="productTable" layoutX="7.0" layoutY="347.0" prefHeight="332.0" prefWidth="801.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="199.0">
         <columns>
-            <TableColumn fx:id="productQuanlity" prefWidth="98.0" text="Quanlity" />
-            <TableColumn fx:id="productName" prefWidth="289.0" text="Product Name" />
-          <TableColumn fx:id="productTradePrice" minWidth="0.0" prefWidth="142.0" text="Trade Price" />
-          <TableColumn fx:id="productDiscount" minWidth="0.0" prefWidth="96.0" text="Discount" />
-            <TableColumn fx:id="productAmount" prefWidth="175.0" text="Amount" />
+            <TableColumn fx:id="productName" prefWidth="232.0" text="Product Name" />
+            <TableColumn fx:id="productPacking" prefWidth="103.0" text="Package" />
+          <TableColumn fx:id="productTradePrice" minWidth="0.0" prefWidth="102.0" text="Trade Price" />
+          <TableColumn fx:id="productDiscount" minWidth="0.0" prefWidth="102.0" text="Discount" />
+            <TableColumn fx:id="productBonus" prefWidth="92.0" text="Bonus" />
+            <TableColumn fx:id="productQuanlity" prefWidth="85.0" text="Quanlity" />
+            <TableColumn fx:id="productAmount" minWidth="0.0" prefWidth="83.0" text="Amount" />
         </columns>
       </TableView>
       <TextField fx:id="combineDiscount" layoutX="816.0" layoutY="507.0" prefHeight="29.0" prefWidth="169.0" promptText="Combine Discount" />
       <Button layoutX="816.0" layoutY="603.0" mnemonicParsing="false" onAction="#printOnClick" prefHeight="29.0" prefWidth="169.0" text="Generate Invoice" />
       <Button fx:id="deleteButton" layoutX="816.0" layoutY="420.0" mnemonicParsing="false" onAction="#ButtonDeleteAction" prefHeight="29.0" prefWidth="169.0" text="Delete" />
       <CheckBox fx:id="generatePrinter" layoutX="816.0" layoutY="560.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="169.0" text="Print " />
+      <TextField fx:id="bonusDiscount" layoutX="40.0" layoutY="281.0" prefHeight="29.0" prefWidth="219.0" promptText="Bonus" visible="false" />
    </children>
 </AnchorPane>

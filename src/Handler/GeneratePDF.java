@@ -43,6 +43,7 @@ public class GeneratePDF {
 
     public String GeneratePDFDoc(String[] CustomerData, JSONArray tableData) throws IOException, DocumentException, JSONException {
 
+        
         String Path = "D:\\InvoicePDF/" + CustomerData[1] + ".pdf";
         //Create PdfReader instance. 
         PdfReader pdfReader = new PdfReader("D:\\InvoicePDF/SamplePDF.pdf");
@@ -51,7 +52,7 @@ public class GeneratePDF {
         //Create BaseFont instance. 
         //Create BaseFont instance. 
         BaseFont baseFont = BaseFont.createFont(BaseFont.COURIER_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-
+            
         int pages = pdfReader.getNumberOfPages();
         if (1 == pages) {
             PdfContentByte CustomerName = pdfStamper.getOverContent(pages);
@@ -88,6 +89,19 @@ public class GeneratePDF {
 
                 //System.out.println(tableData.getJSONObject(i));
                 // Set Product Name.
+                PdfContentByte productpacking = pdfStamper.getOverContent(pages);
+                productpacking.beginText();
+                //Set text font and size. 
+                productpacking.setFontAndSize(baseFont, 13);
+                productpacking.setTextMatrix(115, heightValue);
+
+                //Write text 
+                productpacking.showText(tableData.getJSONObject(i).get("Packing").toString());
+                productpacking.endText();
+                
+                
+                
+                // Set Product Name.
                 PdfContentByte productName = pdfStamper.getOverContent(pages);
                 productName.beginText();
                 //Set text font and size. 
@@ -106,7 +120,11 @@ public class GeneratePDF {
                 ProductQuanlity.setTextMatrix(50, heightValue);
 
                 //Write text 
-                ProductQuanlity.showText(tableData.getJSONObject(i).get("Quanlity").toString());
+                if  ( tableData.getJSONObject(i).get("Bonus").toString().isEmpty()) {
+                    ProductQuanlity.showText(tableData.getJSONObject(i).get("Quanlity").toString());
+                } else {
+                    ProductQuanlity.showText(tableData.getJSONObject(i).get("Quanlity").toString() + '+' + tableData.getJSONObject(i).get("Bonus").toString());
+                }
                 ProductQuanlity.endText();
 
                 if (CustomerData[3] == "Individuals") {
@@ -116,11 +134,22 @@ public class GeneratePDF {
                     //Set text font and size. 
                     ProductDiscount.setFontAndSize(baseFont, 13);
                     ProductDiscount.setTextMatrix(458, heightValue);
-
+                
                     //Write text 
-                    ProductDiscount.showText(tableData.getJSONObject(i).get("Discount").toString());
+                    ProductDiscount.showText(tableData.getJSONObject(i).get("Discount").toString()+ "%");
+                    
+                    
+                    //Set text font and size. 
+                    ProductDiscount.setFontAndSize(baseFont, 17);
+                    ProductDiscount.setTextMatrix(458, heightValue);
+                    
+                    //Bonus
+                    ProductDiscount.showText("0");
+                    
                     ProductDiscount.endText();
+                
                 }
+                
                 // Set Product Trade Price.
                 PdfContentByte ProductTradePrice = pdfStamper.getOverContent(pages);
                 ProductTradePrice.beginText();
@@ -172,6 +201,14 @@ public class GeneratePDF {
                 int finalPrice = totalPrice - (int) discountPrice;
                 //Write text 
                 ProductTotalMainPrice.showText(Integer.toString(finalPrice));
+                
+                //Set text font and size. 
+                ProductTotalMainPrice.setFontAndSize(baseFont, 15);
+                ProductTotalMainPrice.setTextMatrix(510, 110);
+                
+                //Write Bonus 
+                ProductTotalMainPrice.showText("0");
+                
                 ProductTotalMainPrice.endText();
 
             } else {
